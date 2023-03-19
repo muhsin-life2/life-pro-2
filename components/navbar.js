@@ -822,11 +822,11 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
             <div className="grid grid-cols-2 py-1 px-4 max-w-7xl mx-auto text-white lg:flex md:flex hidden  text-xs " >
               <div className="my-auto"> Highest Rated Pharmacy App in UAE | Rating | Download </div>
               <div className="text-end ml-auto"> <span className="font-bold">DELIVER TO:</span> {sessionServ && sessionServ?.length != 0 ? (displayedAddress(sessionServ[AddressDataIndex])) : "Select a Location"}
-                <button data-modal-target={sessionServ ? "" : "location-modal"} data-modal-toggle={sessionServ ? "" : "location-modal"}
+                <button data-modal-target={session ? "" : "location-modal"} data-modal-toggle={session ? "" : "location-modal"}
                   onClick={() => {
                     setaddNewAddress(true)
                     sessionServ?.length != 0 ? setavailableAddresses(true) : ""
-                    sessionServ.length === 0 ? setaddnewAddressFormVisibility(true) : ""
+                    session.token.addresses.length === 0 ? setaddnewAddressFormVisibility(true) : ""
                   }}
                   className="bg-white text-black rounded px-3 ml-3 py-1">CHANGE</button>
               </div>
@@ -1278,7 +1278,7 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
                     </svg>
 
                     <input type="text" id="sm-searchbox"
-                      class="placeholder:text-sm border-none bg-gray-200 rounded-full  block w-full  focus:ring-0  py-[5px] pl-12   text-slate-900 placeholder:text-slate-500 sm:text-sm sm:leading-6 pr-10"
+                      class="placeholder:text-sm border-none bg-gray-100 rounded-full  block w-full  focus:ring-0  py-[5px] pl-12   text-slate-900 placeholder:text-slate-500 sm:text-sm sm:leading-6 pr-10"
                       placeholder="Search for products . . ." onInput={(e) => { searchButtonOnMouseEnter(e.target.value) }} />
 
                     {searchClosebtn ? <button onClick={() => { searchBoxClear() }} type="button"
