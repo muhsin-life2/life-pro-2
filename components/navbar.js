@@ -44,7 +44,7 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
   const [otpPageVisibility, setOtpPageVisibility] = useState(false);
   const [notValidOTPPageVisib, setnotValidOTPPageVisib] = useState(false);
   const [welcomeBackPopUp, setwelcomeBackPopUp] = useState(false);
-  const [addNewAddress, setaddNewAddress] = useState(true);
+  const [addNewAddress, setaddNewAddress] = useState(false);
   const [addNewAddressClick, setAddNewAddressClick] = useState(true);
 
   const [addnewAddressFormVisibility, setaddnewAddressFormVisibility] = useState(false);
@@ -326,11 +326,14 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
   async function otpIsValid(otpValue) {
     if (signInUsing === "Phone") {
       await signIn('credentials', { phone: phoneNumberforOTP, code: otpValue, isPhone: "true", redirect: false })
-        .then(({ ok, error }) => {
+        .then(async ({ ok, error }) => {
           if (ok) {
             setModalAction("authentication-modal", "close")
-            setaddNewAddress(true);
-            refreshData();
+            await refreshData().then(() => {
+              setaddNewAddress(true);
+            }
+
+            )
 
           }
           else {
@@ -341,11 +344,12 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
     }
     else {
       await signIn('credentials', { email: phoneNumberforOTP, code: otpValue, isPhone: "false", redirect: false })
-        .then(({ ok, error }) => {
+        .then(async ({ ok, error }) => {
           if (ok) {
             setModalAction("authentication-modal", "close")
-            setaddNewAddress(true);
-            refreshData();
+            await refreshData().then(() => {
+              setaddNewAddress(true);
+            })
 
           }
           else {
@@ -360,12 +364,11 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
   }
 
   function setModalAction(idOfModal, modalActions) {
-    const $modalElement = document.getElementById(idOfModal);
-
+    var $modalElement = document.getElementById(idOfModal);
     const modalOptions = {
       placement: 'bottom-right',
       backdrop: 'dynamic',
-      backdropClasses: 'absolute inset-0 bg-slate-900/25 opacity-100 backdrop-blur-sm transition-opacity',
+      backdropClasses: 'hello',
       closable: true,
       onHide: () => {
         console.log('modal is hidden');
@@ -385,6 +388,7 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
         break;
       case "show":
         modal.show()
+        $modalElement.classList.remove("hidden")
         break;
       default:
         console("Error Modal Option")
@@ -471,8 +475,8 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
   const router = useRouter();
   // Call this function whenever you want to
   // refresh props!
-  const refreshData = () => {
-    router.replace(router.asPath);
+  const refreshData = async () => {
+    await router.replace(router.asPath);
   }
   const formDatahandleChange = (e) => {
     debugger
@@ -503,6 +507,24 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
     return `${displayAddressData.building}, ${displayAddressData.flat_number} - ${displayAddressData.street_address} - ${displayAddressData.city} - ${displayAddressData.area} - ${displayAddressData.state} - ${displayAddressData.country}`.substring(0, 30) + '...'
   }
 
+
+  function locationOnClickHandle(sessionData) {
+    debugger
+    if (session != null) {
+      setaddNewAddress(true)
+
+      if (sessionData.length > 0) {
+        setavailableAddresses(true)
+      }
+      else if (sessionData.length == 0) {
+        setAddNewAddressClick(true)
+      }
+    }
+    else {
+      setModalAction("location-modal", "show")
+    }
+
+  }
 
   return (
     <>
@@ -778,6 +800,7 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
                             <a href="#" onClick={(e) => {
                               e.preventDefault()
                               signOut()
+                              refreshData()
                             }} class="dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 flex items-center gap-4">
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-red-500">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
@@ -788,7 +811,7 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
                         </ul>
                       </div>
                     </div>
-                    : ""}</> : <a href="#" class=" flex-col md:hidden lg:flex hidden" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
+                    : ""}</> : <a href="#" class=" flex-col md:hidden lg:flex hidden" onClick={() => { setModalAction("authentication-modal", "show") }}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                     stroke="currentColor" className=" my-auto text-white w-8 h-8 mx-auto">
                     <path strokeLinecap="round" strokeLinejoin="round"
@@ -822,11 +845,9 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
             <div className="grid grid-cols-2 py-1 px-4 max-w-7xl mx-auto text-white lg:flex md:flex hidden  text-xs " >
               <div className="my-auto"> Highest Rated Pharmacy App in UAE | Rating | Download </div>
               <div className="text-end ml-auto"> <span className="font-bold">DELIVER TO:</span> {sessionServ && sessionServ?.length != 0 ? (displayedAddress(sessionServ[AddressDataIndex])) : "Select a Location"}
-                <button data-modal-target={session ? "" : "location-modal"} data-modal-toggle={session ? "" : "location-modal"}
+                <button
                   onClick={() => {
-                    setaddNewAddress(true)
-                    sessionServ?.length != 0 ? setavailableAddresses(true) : ""
-                    session.token.addresses.length === 0 ? setaddnewAddressFormVisibility(true) : ""
+                    locationOnClickHandle(sessionServ)
                   }}
                   className="bg-white text-black rounded px-3 ml-3 py-1">CHANGE</button>
               </div>
@@ -934,7 +955,7 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
                                           <div class="grid lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-3   gap-y-5 p-2">{cat_data.sections.map(ch_data => (
                                             <a href="#" class=" xl:flex mx-2  hover:bg-white rounded-lg p-2 hover:border-gray-200 hover:border border border-gray-50 group/item">
                                               <Image className="xl:mx-0 mx-auto group-hover/item:scale-110 transition scale-100 duration-200 ease-in-out" src={LoadImages(ch_data.images)} height={50} width={50} />
-                                              <p class="xl:ml-3 xl:text-left ml-0 text-center text-[11px] my-auto ">{ch_data.name}</p>
+                                              <p class="xl:ml-3 xl:my-auto mt-3 xl:text-left ml-0 text-center text-[11px] my-auto ">{ch_data.name}</p>
                                             </a>
                                           ))}</div>
                                         </div>
@@ -1194,11 +1215,15 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
 
 
 
-        <div id="location-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full origin-top transition-all ease-in-out duration-500 delay-100" >
+        <div id="location-modal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-modal justify-center items-center" >
+          <div id="overlay" className=" fixed inset-0 transition-opacity">
+            <div className="absolute inset-0 bg-gray-500 opacity-50"></div>
+          </div>
+
           <div class="relative w-full h-full max-w-lg md:h-auto">
 
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-3">
-              <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="location-modal">
+              <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" onClick={() => { setModalAction("location-modal", "close") }}>
                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                 <span class="sr-only">Close modal</span>
               </button>
@@ -1236,7 +1261,7 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
                       <input type="text"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-r-lg border-l-gray-300 border-l-2  block w-full p-2.5   dark:placeholder-gray-400 dark:text-white " placeholder="Type a Location" />
                     </div>
-                    <a href="#"><h3 class="text-xl font-medium text-blue-400 dark:text-white text-center underline mt-8" data-modal-hide="location-modal" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
+                    <a href="#"><h3 class="text-xl font-medium text-blue-400 dark:text-white text-center underline mt-8" onClick={() => { setModalAction("authentication-modal", "show") }}>
                       Or Login Now
                     </h3></a>
                     <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-center">
@@ -1464,10 +1489,13 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
             </div>
           </div>
         </div>
-        <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-modal ">
+        <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 left-0 right-0 z-50 p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)]  flex justify-center items-center no-scrollbar">
+          <div id="overlay" className=" fixed inset-0 transition-opacity">
+            <div className="absolute inset-0 bg-gray-500 opacity-50"></div>
+          </div>
           <div class="relative w-full h-full max-w-xl md:h-auto">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 ">
-              <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="authentication-modal">
+              <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" onClick={() => { setModalAction("authentication-modal", "close") }}>
                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                 <span class="sr-only">Close modal</span>
               </button>
@@ -1653,7 +1681,7 @@ dark:text-white">Please check your {signInUsing} and enter the OTP code  <span c
 
         </>
           :""} */}
-        {session && addNewAddress ?
+        {sessionServ && addNewAddress ?
           <div id="addNewAddressModal" tabindex="-1" aria-hidden="true" class=" fixed top-0 left-0 right-0 z-50 p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)]  flex justify-center items-center no-scrollbar">
             <div id="overlay" className=" fixed inset-0 transition-opacity">
               <div className="absolute inset-0 bg-gray-500 opacity-50"></div>
@@ -1689,7 +1717,10 @@ dark:text-white">Please check your {signInUsing} and enter the OTP code  <span c
             {sessionServ.length > 0 && availableAddresses ? <div class="relative h-full  w-full max-w-4xl  ">
               <div class="h-fit overflow-y-auto overflow-x-hidden rounded-lg bg-white shadow dark:bg-gray-700 no-scrollbar ">
                 <div class="flex items-start justify-between">
-                  <button onClick={() => { setaddNewAddress(false) }} type="button" class=" absolute -right-4 -top-4 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white">
+                  <button onClick={() => {
+                    setaddNewAddress(false)
+                    setavailableAddresses(false)
+                  }} type="button" class=" absolute -right-4 -top-4 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white">
                     <svg class="h-6 w-6 rounded-full bg-red-400 p-1 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg><span class="sr-only">Close modal</span>
                   </button>
                 </div>
