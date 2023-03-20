@@ -2,12 +2,19 @@ import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import Layout from 'components/layout'
-import { useSession, getSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 const inter = Inter({ subsets: ['latin'] })
-import { getToken } from 'next-auth/jwt'
-import { redirect } from 'next/dist/server/api-utils'
+import { Swiper, SwiperSlide } from "swiper/react";
+import Image from 'next/image'
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
-export default function Home({ data, brands_data, sessionServ }) {
+
+import { Pagination, Navigation } from "swiper";
+
+export default function Home({ data, brands_data, sessionServ, home_page_data }) {
   return (
     <>
       <Head>
@@ -25,6 +32,53 @@ export default function Home({ data, brands_data, sessionServ }) {
       <Layout data={data} brands_data={brands_data} sessionServ={sessionServ}>
         {/* <div class="font-bold text-center p-5 text-xl">Hello {session ? session.token.name : 'User'}</div> */}
         <main className={styles.main}>
+
+          <div class=" mx-auto max-w-7xl">
+
+            {home_page_data.map(data =>
+              <>
+                {data.section_type === "dynamic_slider_grid" && (!data.settings.hide_in_desktop_web || data.settings.hide_in_desktop_web === false) ?
+<>
+<div class="text-md text-center my-3">{data.section_title}</div>
+<Swiper
+                    slidesPerView={data.settings.desktop.column}
+                    pagination={{
+                      dynamicBullets: true,
+                    }}
+                    onPaginationHide={data.settings.show_pagination === true}
+                    navigation={data.settings.navigation ? true : false}
+                    modules={[Pagination, Navigation]}
+                    autoplay={data.settings.autoplay ? true : false}
+                    spaceBetween={20}
+                    className="mySwiper mx-auto">
+
+                    {data.section_data_array.map(sec_data => (
+                      <SwiperSlide>
+                        {sec_data.desktop.image_url ? <Image src={sec_data.desktop.image_url} class="mx-auto  w-full" height={sec_data.desktop.height ? sec_data.desktop.height : 109} width={sec_data.desktop.width ? sec_data.desktop.width : 390} /> : ""}
+                      </SwiperSlide>
+                    ))}
+
+                  </Swiper>
+</>
+          
+                  : ""}
+
+
+
+                {data.section_type === "dynamic_grid" && (!data.settings.hide_in_desktop_web || data.settings.hide_in_desktop_web === false) ?
+
+                  <div className={((data.order_id === 37 ? "grid-flow-col " : "") + (data.settings.desktop.column > 1 ? ` grid-cols-${data.settings.desktop.column}` : "") + (data.settings.desktop.row > 1 ? ` grid-cols-${data.settings.desktop.row}` : "")) + " grid "}>
+                    {data.section_data_array.map(sec_data => (
+                      sec_data.desktop.image_url ?
+                        <Image src={sec_data.desktop.image_url} class="w-full" height={sec_data.desktop.height ? sec_data.desktop.height : 30} width={sec_data.desktop.width ? sec_data.desktop.width : 390} ></Image>
+                        : ""
+                    ))}
+                  </div>
+                  : ""}
+              </>
+            )}
+
+          </div>
         </main>
       </Layout>
 
@@ -39,11 +93,17 @@ export async function getServerSideProps(context) {
   const brands_res = await fetch("https://prodapp.lifepharmacy.com/api/web/brands");
   const brands_data = await brands_res.json();
 
+
+  const home_page_res = await fetch("https://prodapp.lifepharmacy.com/api/cms/page/home");
+  const hp_data = await home_page_res.json();
+  const home_page_data = hp_data.data.content;
   //when session is available
   const session = await getSession(context);
-  var userAddrData = {data:{
-    addresses:[]
-  }};
+  var userAddrData = {
+    data: {
+      addresses: []
+    }
+  };
   if (session) {
     // console.log(session.token.token);
     // const userAddrheaders = { 'Authorization': `Bearer ${session.token.token}` };
@@ -52,14 +112,15 @@ export async function getServerSideProps(context) {
         Authorization: `Bearer ${session.token.token}`
       }
     });
-     userAddrData = await userAddrheaderRes.json();
+    userAddrData = await userAddrheaderRes.json();
     // console.log(userAddrData.data.addresses);
   }
   return {
     props: {
       data,
       brands_data,
-      sessionServ: userAddrData.data.addresses
+      sessionServ: userAddrData.data.addresses,
+      home_page_data
     }
   }
 }
