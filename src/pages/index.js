@@ -6,15 +6,86 @@ import { getSession } from 'next-auth/react'
 const inter = Inter({ subsets: ['latin'] })
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from 'next/image'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { useWindowSize } from '@react-hook/window-size'
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import PageStructure from 'components/page-structure'
+
+import DynamicSliderGrid from 'components/dynamic-slider-grid'
+import DynamicGrid from 'components/dynamic-grid'
+
+// function dynamicSliderGrid(data, isDesktop, isMobile) {
+
+//   if (isDesktop === false && isMobile === false) {
+//     return <></>
+//   }
+
+//   return <>
+
+//     {data.settings.show_section_title ?
+//       <div class="text-lg text-center my-3">{data.section_title}</div>
+//       : ""}
+//     <Swiper
+//       slidesPerView={isDesktop ? data.settings.desktop.column : data.settings.mobile.column}
+//       pagination={{
+//         dynamicBullets: true,
+//       }}
+//       onPaginationHide={data.settings.show_pagination === true}
+//       navigation={data.settings.navigation ? true : false}
+//       modules={[Pagination, Navigation]}
+//       autoplay={data.settings.autoplay ? true : false}
+//       spaceBetween={20}
+//       className="mySwiper mx-auto">
+
+//       {data.section_data_array.map(sec_data => (
+//         <SwiperSlide>
+//           {(sec_data.desktop.image_url || sec_data.mobile.image_url) &&
+//             <Link href={`/${sec_data.slug}`} >
+//               <Image src={isDesktop ? sec_data.desktop.image_url : sec_data.mobile.image_url} class="mx-auto  w-full hover:bg-gray-700 h-full"
+//                 height={isDesktop ? (sec_data.desktop.height ? sec_data.desktop.height : 109) : (sec_data.mobile.height ? sec_data.mobile.height : 109)}
+//                 width={isDesktop ? (sec_data.desktop.width ? sec_data.desktop.width : 390) : sec_data.mobile.width ? sec_data.mobile.width : 390} /></Link>
+//           }
+//         </SwiperSlide>
+//       ))}
+//     </Swiper>
+//   </>
+
+// }
 
 
-import { Pagination, Navigation } from "swiper";
+// function dynamicGrid(data, isDesktop, isMobile) {
 
-export default function Home({ data, brands_data, sessionServ, home_page_data }) {
+//   if (isDesktop === false && isMobile === false) {
+//     return <></>
+//   }
+//   return <div
+//     className={((isDesktop ? data.section_title === "Main category" ? "grid-flow-col " : "" : "") + (isDesktop ? (data.settings.desktop.column > 1 ? ` grid-cols-${data.settings.desktop.column}` : "") : (data.settings.mobile.column > 1 ? ` grid-cols-${data.settings.mobile.column}` : "")) + (isDesktop ? (data.settings.desktop.row > 1 ? ` grid-rows-${data.settings.desktop.row}` : "") : (data.settings.mobile.row > 1 ? ` grid-rows-${data.settings.mobile.row}` : ""))) + " grid px-3"}>
+//     {data.section_data_array.map(sec_data => (
+//       ((isDesktop && sec_data.desktop.image_url) || isMobile && sec_data.mobile.image_url ?
+//         <Image src={isDesktop ? sec_data.desktop.image_url : sec_data.mobile.image_url} class="w-full "
+//           height={isDesktop ? (sec_data.desktop.height ? sec_data.desktop.height : 30) : (sec_data.mobile.height ? sec_data.mobile.height : 30)}
+//           width={isDesktop ? (sec_data.desktop.width ? sec_data.desktop.width : 390) : (sec_data.mobile.width ? sec_data.mobile.width : 390)} />
+//         : "")
+//     ))}
+//   </div>
+
+// }
+
+
+export default function Home() {
+  // const [domLoaded, setDomLoaded] = useState(false);
+  // const [width, height] = useWindowSize();
+
+  // useEffect(() => {
+  //   setDomLoaded(true);
+
+  // }, []);
+
+
   return (
     <>
       <Head>
@@ -25,102 +96,49 @@ export default function Home({ data, brands_data, sessionServ, home_page_data })
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0"></meta>
         <link rel="icon" href="/life-logo.jfif" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
       </Head>
-      <Layout data={data} brands_data={brands_data} sessionServ={sessionServ}>
-        {/* <div class="font-bold text-center p-5 text-xl">Hello {session ? session.token.name : 'User'}</div> */}
-        <main className={styles.main}>
 
-          <div class=" mx-auto max-w-7xl">
+      {/* <div class="font-bold text-center p-5 text-xl">Hello {session ? session.token.name : 'User'}</div> */}
+      <main className={styles.main}>
 
-            {home_page_data.map(data =>
-              <>
-                {data.section_type === "dynamic_slider_grid" && (!data.settings.hide_in_desktop_web || data.settings.hide_in_desktop_web === false) ?
-<>
-<div class="text-md text-center my-3">{data.section_title}</div>
-<Swiper
-                    slidesPerView={data.settings.desktop.column}
-                    pagination={{
-                      dynamicBullets: true,
-                    }}
-                    onPaginationHide={data.settings.show_pagination === true}
-                    navigation={data.settings.navigation ? true : false}
-                    modules={[Pagination, Navigation]}
-                    autoplay={data.settings.autoplay ? true : false}
-                    spaceBetween={20}
-                    className="mySwiper mx-auto">
+        <div class=" mx-auto max-w-7xl">
+         home
+        </div>
+      </main>
 
-                    {data.section_data_array.map(sec_data => (
-                      <SwiperSlide>
-                        {sec_data.desktop.image_url ? <Image src={sec_data.desktop.image_url} class="mx-auto  w-full" height={sec_data.desktop.height ? sec_data.desktop.height : 109} width={sec_data.desktop.width ? sec_data.desktop.width : 390} /> : ""}
-                      </SwiperSlide>
-                    ))}
-
-                  </Swiper>
-</>
-          
-                  : ""}
-
-
-
-                {data.section_type === "dynamic_grid" && (!data.settings.hide_in_desktop_web || data.settings.hide_in_desktop_web === false) ?
-
-                  <div className={((data.order_id === 37 ? "grid-flow-col " : "") + (data.settings.desktop.column > 1 ? ` grid-cols-${data.settings.desktop.column}` : "") + (data.settings.desktop.row > 1 ? ` grid-cols-${data.settings.desktop.row}` : "")) + " grid "}>
-                    {data.section_data_array.map(sec_data => (
-                      sec_data.desktop.image_url ?
-                        <Image src={sec_data.desktop.image_url} class="w-full" height={sec_data.desktop.height ? sec_data.desktop.height : 30} width={sec_data.desktop.width ? sec_data.desktop.width : 390} ></Image>
-                        : ""
-                    ))}
-                  </div>
-                  : ""}
-              </>
-            )}
-
-          </div>
-        </main>
-      </Layout>
 
     </>
   )
 }
 
-export async function getServerSideProps(context) {
-  const res = await fetch("https://prodapp.lifepharmacy.com/api/categories");
-  const data = await res.json();
-
-  const brands_res = await fetch("https://prodapp.lifepharmacy.com/api/web/brands");
-  const brands_data = await brands_res.json();
+// export async function getServerSideProps(context) {
 
 
-  const home_page_res = await fetch("https://prodapp.lifepharmacy.com/api/cms/page/home");
-  const hp_data = await home_page_res.json();
-  const home_page_data = hp_data.data.content;
-  //when session is available
-  const session = await getSession(context);
-  var userAddrData = {
-    data: {
-      addresses: []
-    }
-  };
-  if (session) {
-    // console.log(session.token.token);
-    // const userAddrheaders = { 'Authorization': `Bearer ${session.token.token}` };
-    const userAddrheaderRes = await fetch('https://prodapp.lifepharmacy.com/api/user/addresses', {
-      headers: {
-        Authorization: `Bearer ${session.token.token}`
-      }
-    });
-    userAddrData = await userAddrheaderRes.json();
-    // console.log(userAddrData.data.addresses);
-  }
-  return {
-    props: {
-      data,
-      brands_data,
-      sessionServ: userAddrData.data.addresses,
-      home_page_data
-    }
-  }
-}
+
+
+//   //when session is available
+//   const session = await getSession(context);
+//   var userAddrData = {
+//     data: {
+//       addresses: []
+//     }
+//   };
+//   if (session) {
+//     // console.log(session.token.token);
+//     // const userAddrheaders = { 'Authorization': `Bearer ${session.token.token}` };
+//     const userAddrheaderRes = await fetch('https://prodapp.lifepharmacy.com/api/user/addresses', {
+//       headers: {
+//         Authorization: `Bearer ${session.token.token}`
+//       }
+//     });
+//     userAddrData = await userAddrheaderRes.json();
+//     // console.log(userAddrData.data.addresses);
+//   }
+//   return {
+//     props: {
+   
+//       sessionServ: userAddrData.data.addresses,
+    
+//     }
+//   }
+// }

@@ -2,13 +2,18 @@ import { useSession, getSession } from 'next-auth/react'
 
 import { Modal } from 'flowbite'
 import { ModalOptions, ModalInterface } from 'flowbite'
-import { useRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper'
-
+import React, { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+import Example from 'components/categories-accordion';
+import AuthModal from 'components/auth-modal';
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+
+import { Pagination, Navigation } from "swiper";
 export default function Login({ data }) {
     // SwiperCore.use([Autoplay])
 
@@ -46,32 +51,34 @@ export default function Login({ data }) {
     return (
         <>
             {/* {console.log(session)} */}
-            <Swiper
-                slidesPerView={3}
 
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
-                autoplay={{
 
-                    delay: 10,
-                    disableOnInteraction: false,
-                }}
-                speed={3000}
-                modules={[Autoplay]}
-                onAutoplayTimeLeft={onAutoplayTimeLeft}
-                loop={true}
 
-            //   onAutoplayTimeLeft={onAutoplayTimeLeft}
-            >
+
+            <Swiper pagination={{
+                dynamicBullets: true,
+            }} navigation={true} modules={[Pagination, Navigation]} className="mySwiper">
                 <SwiperSlide>
+                    <img src="https://lifeadmin-app.s3.me-south-1.amazonaws.com/mobile-app/homescreen/1010sale/PRSS-Web-Home.gif?format=webp&quality=85" onClick={openmo} />
                 </SwiperSlide>
-                <div className="autoplay-progress w-20 mx-auto" slot="container-end">
-                    <svg viewBox="0 0 48 48" ref={progressCircle}>
-                        <circle cx="24" cy="24" r="20"></circle>
-                    </svg>
-                    <span ref={progressContent}></span>
-                </div>
+                <SwiperSlide>
+                    <img src="https://lifeadmin-app.s3.me-south-1.amazonaws.com/mobile-app/homescreen/1010sale/PRSS-Web-Home.gif?format=webp&quality=85" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://lifeadmin-app.s3.me-south-1.amazonaws.com/mobile-app/homescreen/1010sale/PRSS-Web-Home.gif?format=webp&quality=85" />
+                </SwiperSlide>
+                <SwiperSlide>Slide 2</SwiperSlide>
+                <SwiperSlide>Slide 3</SwiperSlide>
+                <SwiperSlide>Slide 4</SwiperSlide>
+                <SwiperSlide>Slide 5</SwiperSlide>
+                <SwiperSlide>Slide 6</SwiperSlide>
+                <SwiperSlide>Slide 7</SwiperSlide>
+                <SwiperSlide>Slide 8</SwiperSlide>
+                <SwiperSlide>Slide 9</SwiperSlide>
             </Swiper>
+
+            <Example />
+
             {/* <div id="popup-modgrayscale z-50 grayscale overflow-y-auto overflow-x-hidden p-4 shadow-md md:h-auto w-96 rounded-b-3xl">
                 <div class="relative h-full w-full max-w-md  bg-white md:h-auto rounded-3xl">
                     <buttongrayscale.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal"></button>
