@@ -24,6 +24,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper'
 import 'swiper/css';
 import 'swiper/css/pagination';
+import Example from "./categories-accordion";
 
 
 const Navbar = ({ data, brands_data, sessionServ }) => {
@@ -165,17 +166,7 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
   }
 
 
-  function LoadImages(imagesrc) {
-    if (imagesrc.logo === null && imagesrc.banner === null) {
-      return "/Images/loading-img.gif"
-    }
-    else if (imagesrc.logo === null) {
-      return imagesrc.banner;
-    }
-    else {
-      return imagesrc.logo;
-    }
-  }
+
 
 
   var i = 1;
@@ -895,10 +886,9 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
                   <div class="mx-auto md:w-full xl:w-full mb-5" >
                     <div class="font-bold lg:text-2xl text-center mb-3" >TOP BRANDS</div>
                     <Swiper
-                      className="my-7 "
+                      className="my-6 "
                       slidesPerView={6}
                       onSlideChange={() => console.log('slide change')}
-                      onSwiper={(swiper) => console.log(swiper)}
                       autoplay={{
                         delay: 10,
                         disableOnInteraction: false,
@@ -941,28 +931,9 @@ const Navbar = ({ data, brands_data, sessionServ }) => {
                             <div class="flex justify-between  w-full flex-wrap">
 
                               <div class="  lg:order-none md:w-full">
-                                <div id="accordion-collapse" data-accordion="open" class="grid lg:grid-cols-2 px-2">
-                                  {item.children.map((cat_data, indx) => (
-                                    cat_data.sections.length > 0 ?
-                                      <div class="mr-2 rounded-full">
-                                        <h2 id={(cat_data.name).replace(/\s/g, '')}>
-                                          <button type="button" class=" flex items-center justify-between w-full px-3 py-2 font-medium text-left  border border-b-1 border-gray-200 rounded-xl dark:focus:ring-blue-600 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 " data-accordion-target={("#" + cat_data.slug + "body").replace(/\s/g, '')} aria-expanded={indx == 0 || indx == 1 ? "true" : "false"} aria-controls={(cat_data.slug + "body").replace(/\s/g, '')}>
-                                            <span>{cat_data.name}</span>
-                                            <svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                          </button>
-                                        </h2>
-                                        <div id={(cat_data.slug + "body").replace(/\s/g, '')} class="hidden transition-all duration-500 ease-in border-gray-200 border bg-gray-50 rounded-xl my-2 " aria-labelledby={(cat_data.slug).replace(/\s/g, '')}>
-                                          <div class="grid lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-3   gap-y-5 p-2">{cat_data.sections.map(ch_data => (
-                                            <a href="#" class=" xl:flex mx-2  hover:bg-white rounded-lg p-2 hover:border-gray-200 hover:border border border-gray-50 group/item">
-                                              <Image className="xl:mx-0 mx-auto group-hover/item:scale-110 transition scale-100 duration-200 ease-in-out" src={LoadImages(ch_data.images)} height={50} width={50} />
-                                              <p class="xl:ml-3 xl:my-auto mt-3 xl:text-left ml-0 text-center text-[11px] my-auto ">{ch_data.name}</p>
-                                            </a>
-                                          ))}</div>
-                                        </div>
-                                      </div>
-                                      : ""
-                                  ))}
-                                </div>
+
+                                <Example acc_data={item.children} />
+
                               </div>
 
 
