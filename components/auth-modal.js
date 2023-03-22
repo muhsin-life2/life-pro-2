@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 
 export default function AuthModal({isOpen, setIsOpen}) {
 
-  const [isOpen, setIsOpen] = useState(false);
+  var [isOpen, setIsOpen] = useState(false);
   // let [isOpen, setIsOpen] = useState(true)
 
   // function closeModal() {
