@@ -74,9 +74,6 @@ export async function getStaticProps(context) {
     const pro_data = pro_data_res.data.products;
 
 
-    console.log(hp_data);
-
-    // const data = pro_data.data.products;
 
     return {
         props: {
