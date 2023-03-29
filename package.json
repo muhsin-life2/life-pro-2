@@ -10,15 +10,15 @@
   },
   "dependencies": {
     "@enterwell/react-form-validation": "^1.2.8",
-    "@googlemaps/js-api-loader": "^1.15.1",
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.16",
     "@material-tailwind/react": "^1.4.2",
     "@next/font": "13.1.6",
     "@react-hook/window-size": "^3.1.1",
+    "eslint-config-next": "^13.2.4",
     "flowbite": "^1.6.3",
     "flowbite-react": "^0.3.8",
-    "next": "^13.1.6",
+    "next": "^13.2.4",
     "next-auth": "^4.20.1",
     "react": "^18.2.0",
     "react-countdown": "^2.3.5",
@@ -30,6 +30,7 @@
     "react-phone-number-input": "^3.2.19",
     "react-responsive-carousel": "^3.2.23",
     "swiper": "^9.0.5",
+    "swr": "^2.1.1",
     "use-timer": "^2.0.1"
   },
   "devDependencies": {

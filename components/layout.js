@@ -1,3 +1,4 @@
+"use client"
 import Navbar from "./navbar"
 import Footer from "./footer"
 
@@ -10,7 +11,6 @@ export default function Layout({ children, data, brands_data, sessionServ}) {
       document.getElementById("lg-screen-search").classList.add("rounded-xl");
     }
   }
-
   return (
     <>
       <div onMouseDown={(e) => { searchButtonOnLeave(e) }}>
