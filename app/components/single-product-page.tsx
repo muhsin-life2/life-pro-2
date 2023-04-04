@@ -62,7 +62,7 @@ const SingleProductsContent = ({ pro_data }) => {
                                           
 
 
-            <div className="max-w-[1440px] mx-auto md:text-sm sm:text-xs md:bg-white bg-slate-50">
+            <div className="max-w-[1440px] mx-auto md:text-sm sm:text-xs md:bg-white bg-slate-50 py-5">
                 {pro_data.map(pro_data => (
                     <div>
                         <div className="md:flex justify-between mb-7 flex-none">
@@ -96,7 +96,7 @@ const SingleProductsContent = ({ pro_data }) => {
                                     </>}
 
                             </div>
-                            <div className="flex justify-around px-4 md:px-0">
+                            <div className="flex justify-around md:px-0">
                                 <div className="flex flex-col justify-start lg:w-1/2 w-full ">
                                     <h1 className="text-indigo-900 font-semibold text-lg">{pro_data.title}</h1>
                                     <div className="flex justify-start py-2">
@@ -200,23 +200,23 @@ const SingleProductsContent = ({ pro_data }) => {
                             </div>
                         </div>
                         <div>
-                            <ul className="flex  w-full justify-around  lg:hidden  ">
-                                <li className="  mb-12">
-                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-gift.svg"} className="mx-auto mb-3" height={25} width={25} alt="free delivery" />
+                            <ul className="grid sm:grid-cols-4 grid-cols-2  justify-around  lg:hidden mx-4 space-x-3 mb-4">
+                                <li className="  mb-3 bg-slate-100 p-2 rounded-lg">
+                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-gift.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
                                     <div className="flex flex-col ">
                                         <h5 className="text-indigo-900 text-xs font-semibold text-center">Free Delivery</h5>
                                         <p className="text-xs text-gray-400 text-center">For all orders over AED 29</p>
                                     </div>
                                 </li>
-                                <li className="  mb-12">
-                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-return.svg"} className="mx-auto mb-3" height={25} width={25} alt="free delivery" />
+                                <li className="  mb-3 p-2 rounded-lg bg-slate-100 ">
+                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-return.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
                                     <div className="flex flex-col ">
                                         <h5 className="text-indigo-900 text-xs font-semibold text-center">Easy Return</h5>
                                         <p className="text-xs text-gray-400 text-center">Easy return and refund</p>
                                     </div>
                                 </li>
-                                <li className="  mb-12">
-                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-shield.svg"} className="mx-auto mb-3" height={25} width={25} alt="free delivery" />
+                                <li className="  mb-3 p-2 rounded-lg bg-slate-100 ">
+                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-shield.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
                                     <div className="flex flex-col ">
                                         <h5 className="text-indigo-900 text-xs font-semibold text-center">Secure Payments</h5>
                                         <div>
@@ -224,8 +224,8 @@ const SingleProductsContent = ({ pro_data }) => {
                                         </div>
                                     </div>
                                 </li>
-                                <li className="  mb-12">
-                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-phone.svg"} className="mx-auto mb-3" height={25} width={25} alt="free delivery" />
+                                <li className="  mb-3 p-2 rounded-lg bg-slate-100 ">
+                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-phone.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
                                     <div className="flex flex-col ">
                                         <h5 className="text-indigo-900 text-xs font-semibold text-center">24/7 Support</h5>
                                         <p className="text-xs text-gray-400 text-center">Dedicated Support</p>
