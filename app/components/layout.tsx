@@ -7,8 +7,8 @@ export default function Layout({ children, data, brands_data, sessionServ }) {
   function searchButtonOnLeave(e) {
     if (!e.target.parentNode.classList.contains("group-search")) {
       document.getElementsByClassName("lg-screen-searchsuggestion-lg")[0].classList.add("hidden");
-      (document.getElementById("lg-screen-search") as HTMLInputElement).classList.remove("rounded-t-xl");
-      (document.getElementById("lg-screen-search") as HTMLInputElement).classList.add("rounded-xl");
+      (document.getElementById("lg-screen-search") as HTMLElement).classList.remove("rounded-t-xl");
+      (document.getElementById("lg-screen-search") as HTMLElement).classList.add("rounded-xl");
     }
   }
   return (
