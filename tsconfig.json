@@ -22,14 +22,15 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "pages/api/auth/[...nextauth].ts"  ],
   "exclude": [
     "node_modules"
   ]
